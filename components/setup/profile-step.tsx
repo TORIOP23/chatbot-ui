@@ -64,7 +64,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
       if (!usernameRegex.test(username)) {
         onUsernameAvailableChange(false)
         alert(
-          "Username must be letters, numbers, or underscores only - no other characters or spacing allowed."
+          "Tên đăng nhập chỉ được chứa chữ cái, số hoặc dấu gạch dưới - không được phép sử dụng các ký tự đặc biệt hoặc khoảng trắng."
         )
         return
       }
@@ -90,13 +90,13 @@ export const ProfileStep: FC<ProfileStepProps> = ({
     <>
       <div className="space-y-1">
         <div className="flex items-center space-x-2">
-          <Label>Username</Label>
+          <Label>Tên đăng nhập</Label>
 
           <div className="text-xs">
             {usernameAvailable ? (
-              <div className="text-green-500">AVAILABLE</div>
+              <div className="text-green-500">KHẢ DỤNG</div>
             ) : (
-              <div className="text-red-500">UNAVAILABLE</div>
+              <div className="text-red-500">KHÔNG KHẢ DỤNG</div>
             )}
           </div>
         </div>
@@ -104,7 +104,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
         <div className="relative">
           <Input
             className="pr-10"
-            placeholder="username"
+            placeholder="Tên đăng nhập"
             value={username}
             onChange={e => {
               onUsernameChange(e.target.value)
@@ -129,10 +129,10 @@ export const ProfileStep: FC<ProfileStepProps> = ({
       </div>
 
       <div className="space-y-1">
-        <Label>Chat Display Name</Label>
+        <Label>Tên hiển thị trong cuộc trò chuyện</Label>
 
         <Input
-          placeholder="Your Name"
+          placeholder="Tên hiển thị"
           value={displayName}
           onChange={e => onDisplayNameChange(e.target.value)}
           maxLength={PROFILE_DISPLAY_NAME_MAX}

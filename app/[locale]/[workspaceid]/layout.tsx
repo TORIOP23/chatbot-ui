@@ -156,10 +156,10 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     setModels(modelData.models)
 
     setChatSettings({
-      model: (workspace?.default_model || "gpt-4-1106-preview") as LLMID,
+      model: (workspace?.default_model || "my chat bot") as LLMID,
       prompt:
         workspace?.default_prompt ||
-        "You are a friendly, helpful AI assistant.",
+        "Bạn là một trợ lý AI thân thiện và hữu ích.",
       temperature: workspace?.default_temperature || 0.5,
       contextLength: workspace?.default_context_length || 4096,
       includeProfileContext: workspace?.include_profile_context || true,
