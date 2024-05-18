@@ -30,7 +30,7 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
     setChatMessages,
     selectedChat,
     setSelectedChat,
-    setChatSettings,
+    xsetChatSettings,
     setChatImages,
     assistants,
     setSelectedAssistant,

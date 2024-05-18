@@ -12,26 +12,7 @@ interface ModelOptionProps {
 export const ModelOption: FC<ModelOptionProps> = ({ model, onSelect }) => {
   return (
     <WithTooltip
-      display={
-        <div>
-          {model.provider !== "ollama" && model.pricing && (
-            <div className="space-y-1 text-sm">
-              <div>
-                <span className="font-semibold">Input Cost:</span>{" "}
-                {model.pricing.inputCost} {model.pricing.currency} per{" "}
-                {model.pricing.unit}
-              </div>
-              {model.pricing.outputCost && (
-                <div>
-                  <span className="font-semibold">Output Cost:</span>{" "}
-                  {model.pricing.outputCost} {model.pricing.currency} per{" "}
-                  {model.pricing.unit}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      }
+      display={<div></div>}
       side="bottom"
       trigger={
         <div
