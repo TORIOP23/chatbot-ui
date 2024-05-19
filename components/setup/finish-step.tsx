@@ -12,7 +12,7 @@ export const FinishStep: FC<FinishStepProps> = ({ displayName }) => {
         {displayName.length > 0 ? `, ${displayName.split(" ")[0]}` : null}!
       </div>
 
-      <div>Chọn 'Tiếp theo' để bắt đầu trò chuyện.</div>
+      <div>Chọn &quot;Tiếp theo&quot; để bắt đầu trò chuyện.</div>
     </div>
   )
 }

@@ -146,7 +146,8 @@ export const usePromptAndCommand = () => {
       contextLength: assistant.context_length,
       includeProfileContext: assistant.include_profile_context,
       includeWorkspaceInstructions: assistant.include_workspace_instructions,
-      embeddingsProvider: assistant.embeddings_provider as "openai" | "local"
+      embeddingsProvider:
+        (assistant.embeddings_provider as "custom" | "google") || "google"
     })
 
     let allFiles = []
