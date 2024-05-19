@@ -8,17 +8,16 @@ type ChatSettingLimits = {
 }
 
 export const CHAT_SETTING_LIMITS: Record<LLMID, ChatSettingLimits> = {
-  // GOOGLE MODELS
-  "gemini-pro": {
+  "vinallama-7b-chat": {
     MIN_TEMPERATURE: 0.0,
     MAX_TEMPERATURE: 1.0,
-    MAX_TOKEN_OUTPUT_LENGTH: 2048,
-    MAX_CONTEXT_LENGTH: 30720
+    MAX_TOKEN_OUTPUT_LENGTH: 1024,
+    MAX_CONTEXT_LENGTH: 4096
   },
-  "gemini-pro-vision": {
+  "vinaLlama-7B-chat-finetuned": {
     MIN_TEMPERATURE: 0.0,
     MAX_TEMPERATURE: 1.0,
-    MAX_TOKEN_OUTPUT_LENGTH: 4096,
-    MAX_CONTEXT_LENGTH: 12288
+    MAX_TOKEN_OUTPUT_LENGTH: 1024,
+    MAX_CONTEXT_LENGTH: 4096
   }
 }

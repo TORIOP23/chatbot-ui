@@ -24,7 +24,7 @@ import { set } from "date-fns"
 
 interface QuickSettingsProps {}
 
-export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
+export default function QuickSettings({}: QuickSettingsProps) {
   const { t } = useTranslation()
 
   useHotkey("p", () => setIsOpen(prevState => !prevState))
@@ -114,8 +114,7 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
           includeWorkspaceInstructions:
             selectedWorkspace.include_workspace_instructions,
           embeddingsProvider:
-            (selectedWorkspace.embeddings_provider as "custom" | "google") ||
-            "google"
+            (selectedWorkspace.embeddings_provider as "vilm") || "vilm"
         })
       }
       return
@@ -128,8 +127,7 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
       contextLength: item.context_length,
       includeProfileContext: item.include_profile_context,
       includeWorkspaceInstructions: item.include_workspace_instructions,
-      embeddingsProvider:
-        (item.embeddings_provider as "custom" | "google") || "google"
+      embeddingsProvider: (item.embeddings_provider as "vilm") || "vilm"
     })
   }
 
@@ -195,7 +193,7 @@ export const QuickSettings: FC<QuickSettingsProps> = ({}) => {
         <Button variant="ghost" className="flex space-x-3 text-lg">
           {selectedPreset && (
             <ModelIcon
-              provider={modelDetails?.provider || "custom"}
+              provider={modelDetails?.provider || "vilm"}
               width={32}
               height={32}
             />

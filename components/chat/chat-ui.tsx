@@ -12,16 +12,16 @@ import useHotkey from "@/lib/hooks/use-hotkey"
 import { LLMID, MessageImage } from "@/types"
 import { useParams } from "next/navigation"
 import { FC, useContext, useEffect, useState } from "react"
-import { ChatHelp } from "./chat-help"
+import ChatHelp from "./chat-help"
 import { useScroll } from "./chat-hooks/use-scroll"
-import { ChatInput } from "./chat-input"
+import ChatInput from "./chat-input"
 import { ChatMessages } from "./chat-messages"
 import { ChatScrollButtons } from "./chat-scroll-buttons"
 import { ChatSecondaryButtons } from "./chat-secondary-buttons"
 
 interface ChatUIProps {}
 
-export const ChatUI: FC<ChatUIProps> = ({}) => {
+export default function ChatUI({}: ChatUIProps) {
   useHotkey("o", () => handleNewChat())
 
   const params = useParams()
@@ -177,8 +177,7 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
       contextLength: chat.context_length,
       includeProfileContext: chat.include_profile_context,
       includeWorkspaceInstructions: chat.include_workspace_instructions,
-      embeddingsProvider:
-        (chat.embeddings_provider as "custom" | "google") || "google"
+      embeddingsProvider: (chat.embeddings_provider as "vilm") || "vilm"
     })
   }
 

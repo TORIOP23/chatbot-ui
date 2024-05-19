@@ -10,17 +10,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 interface ChatSettingsProps {}
 
-export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
+export default function ChatSettings({}: ChatSettingsProps) {
   useHotkey("i", () => handleClick())
 
-  const {
-    chatSettings,
-    setChatSettings,
-    models,
-    availableHostedModels,
-    availableLocalModels,
-    availableOpenRouterModels
-  } = useContext(ChatbotUIContext)
+  const { chatSettings, setChatSettings, models, availableHostedModels } =
+    useContext(ChatbotUIContext)
 
   const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -52,14 +46,12 @@ export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
     ...models.map(model => ({
       modelId: model.model_id as LLMID,
       modelName: model.name,
-      provider: "custom" as ModelProvider,
+      provider: "vilm" as ModelProvider,
       hostedId: model.id,
       platformLink: "",
       imageInput: false
     })),
-    ...availableHostedModels,
-    ...availableLocalModels,
-    ...availableOpenRouterModels
+    ...availableHostedModels
   ]
 
   const fullModel = allModels.find(llm => llm.modelId === chatSettings.model)
@@ -92,3 +84,5 @@ export const ChatSettings: FC<ChatSettingsProps> = ({}) => {
     </Popover>
   )
 }
+
+// export default ChatSettings

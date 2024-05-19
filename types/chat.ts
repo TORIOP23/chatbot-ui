@@ -8,7 +8,7 @@ export interface ChatSettings {
   contextLength: number
   includeProfileContext: boolean
   includeWorkspaceInstructions: boolean
-  embeddingsProvider: "google" | "custom"
+  embeddingsProvider: "vilm"
 }
 
 export interface ChatPayload {

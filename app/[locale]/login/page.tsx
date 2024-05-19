@@ -1,4 +1,4 @@
-import { Brand } from "@/components/ui/brand"
+import Brand from "@/components/ui/brand"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SubmitButton } from "@/components/ui/submit-button"
@@ -130,6 +130,8 @@ export default async function Login({
         // emailRedirectTo: `${origin}/auth/callback`
       }
     })
+
+    console.log(error?.message)
 
     if (error) {
       console.error(error)

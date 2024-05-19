@@ -7,7 +7,7 @@ import { getProfileByUserId } from "@/db/profile"
 import { getWorkspaceImageFromStorage } from "@/db/storage/workspace-images"
 import { getWorkspacesByUserId } from "@/db/workspaces"
 import { convertBlobToBase64 } from "@/lib/blob-to-b64"
-import { fetchHostedModels, fetchOllamaModels } from "@/lib/models/fetch-models"
+import { fetchHostedModels } from "@/lib/models/fetch-models"
 import { supabase } from "@/lib/supabase/browser-client"
 import { Tables } from "@/supabase/types"
 import {
@@ -16,11 +16,9 @@ import {
   ChatSettings,
   LLM,
   MessageImage,
-  OpenRouterLLM,
   WorkspaceImage
 } from "@/types"
 import { AssistantImage } from "@/types/images/assistant-image"
-import { VALID_ENV_KEYS } from "@/types/valid-keys"
 import { useRouter } from "next/navigation"
 import { FC, useEffect, useState } from "react"
 
@@ -47,12 +45,7 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   const [workspaces, setWorkspaces] = useState<Tables<"workspaces">[]>([])
 
   // MODELS STORE
-  const [envKeyMap, setEnvKeyMap] = useState<Record<string, VALID_ENV_KEYS>>({})
   const [availableHostedModels, setAvailableHostedModels] = useState<LLM[]>([])
-  const [availableLocalModels, setAvailableLocalModels] = useState<LLM[]>([])
-  const [availableOpenRouterModels, setAvailableOpenRouterModels] = useState<
-    OpenRouterLLM[]
-  >([])
 
   // WORKSPACE STORE
   const [selectedWorkspace, setSelectedWorkspace] =
@@ -73,13 +66,13 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
   const [userInput, setUserInput] = useState<string>("")
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [chatSettings, setChatSettings] = useState<ChatSettings>({
-    model: "gemini-pro",
+    model: "vinaLlama-7B-chat-finetuned",
     prompt: "You are a helpful AI assistant.",
     temperature: 0.5,
     contextLength: 4000,
     includeProfileContext: true,
     includeWorkspaceInstructions: true,
-    embeddingsProvider: "google"
+    embeddingsProvider: "vilm"
   })
   const [selectedChat, setSelectedChat] = useState<Tables<"chats"> | null>(null)
   const [chatFileItems, setChatFileItems] = useState<Tables<"file_items">[]>([])
@@ -124,17 +117,10 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
       const profile = await fetchStartingData()
 
       if (profile) {
-        const hostedModelRes = await fetchHostedModels(profile)
+        const hostedModelRes = await fetchHostedModels()
         if (!hostedModelRes) return
 
-        setEnvKeyMap(hostedModelRes.envKeyMap)
         setAvailableHostedModels(hostedModelRes.hostedModels)
-      }
-
-      if (process.env.NEXT_PUBLIC_OLLAMA_URL) {
-        const localModels = await fetchOllamaModels()
-        if (!localModels) return
-        setAvailableLocalModels(localModels)
       }
     })()
   }, [])
@@ -214,14 +200,8 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
         setWorkspaces,
 
         // MODELS STORE
-        envKeyMap,
-        setEnvKeyMap,
         availableHostedModels,
         setAvailableHostedModels,
-        availableLocalModels,
-        setAvailableLocalModels,
-        availableOpenRouterModels,
-        setAvailableOpenRouterModels,
 
         // WORKSPACE STORE
         selectedWorkspace,

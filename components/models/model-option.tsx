@@ -1,7 +1,6 @@
 import { LLM } from "@/types"
 import { FC } from "react"
 import { ModelIcon } from "./model-icon"
-import { IconInfoCircle } from "@tabler/icons-react"
 import { WithTooltip } from "../ui/with-tooltip"
 
 interface ModelOptionProps {

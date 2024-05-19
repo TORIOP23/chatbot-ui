@@ -2,8 +2,6 @@
 
 The open-source AI chat app for everyone.
 
-<!-- <img src="./public/readme/screenshot.png" alt="Chatbot UI" width="600"> -->
-
 ## Updating
 
 In your terminal at the root of your local Chatbot UI repository, run:
@@ -23,7 +21,7 @@ to apply the latest migrations to your live database.
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/mckaywrigley/chatbot-ui.git
+git clone
 ```
 
 ### 2. Install Dependencies

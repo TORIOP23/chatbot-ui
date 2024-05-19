@@ -51,8 +51,6 @@ export const Message: FC<MessageProps> = ({
     isGenerating,
     setIsGenerating,
     firstTokenReceived,
-    availableLocalModels,
-    availableOpenRouterModels,
     chatMessages,
     selectedAssistant,
     chatImages,
@@ -124,7 +122,7 @@ export const Message: FC<MessageProps> = ({
       input.focus()
       input.setSelectionRange(input.value.length, input.value.length)
     }
-  }, [isEditing])
+  }, [isEditing, message.content])
 
   const MODEL_DATA = [
     ...models.map(model => ({
@@ -135,9 +133,7 @@ export const Message: FC<MessageProps> = ({
       platformLink: "",
       imageInput: false
     })),
-    ...LLM_LIST,
-    ...availableLocalModels,
-    ...availableOpenRouterModels
+    ...LLM_LIST
   ].find(llm => llm.modelId === message.model) as LLM
 
   const messageAssistantImage = assistantImages.find(
@@ -231,7 +227,7 @@ export const Message: FC<MessageProps> = ({
                     display={<div>{MODEL_DATA?.modelName}</div>}
                     trigger={
                       <ModelIcon
-                        provider={modelDetails?.provider || "custom"}
+                        provider={modelDetails?.provider || "vilm"}
                         height={ICON_SIZE}
                         width={ICON_SIZE}
                       />

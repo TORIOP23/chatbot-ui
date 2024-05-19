@@ -1,52 +1,52 @@
 -- WORKSPACES
 
 UPDATE workspaces
-SET default_model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE default_model = 'VinaLlama-7B-Chat-Finetuned';
+SET default_model = 'vinaLlama-7B-chat-finetuned'
+WHERE default_model = 'vinaLlama-7B-chat-finetuned';
 
 UPDATE workspaces
-SET default_model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE default_model = 'VinaLlama-7B-Chat-Finetuned';
+SET default_model = 'vinaLlama-7B-chat-finetuned'
+WHERE default_model = 'vinaLlama-7B-chat-finetuned';
 
 -- PRESETS
 
 UPDATE presets
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 UPDATE presets
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 -- ASSISTANTS
 
 UPDATE assistants
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 UPDATE assistants
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 -- CHATS
 
 UPDATE chats
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 UPDATE chats
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 -- MESSAGES
 
 UPDATE messages
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 UPDATE messages
-SET model = 'VinaLlama-7B-Chat-Finetuned'
-WHERE model = 'VinaLlama-7B-Chat-Finetuned';
+SET model = 'vinaLlama-7B-chat-finetuned'
+WHERE model = 'vinaLlama-7B-chat-finetuned';
 
 -- PROFILES
 
@@ -63,10 +63,9 @@ BEGIN
     random_username := 'user' || substr(replace(gen_random_uuid()::text, '-', ''), 1, 16);
 
     -- Create a profile for the new user
-    INSERT INTO public.profiles(user_id, google_gemini_api_key, has_onboarded, image_url, image_path, display_name, bio, profile_context, username)
+    INSERT INTO public.profiles(user_id, has_onboarded, image_url, image_path, display_name, bio, profile_context, username)
     VALUES(
         NEW.id,
-        '',
         FALSE,
         '',
         '',
@@ -82,7 +81,7 @@ BEGIN
         TRUE,
         'Home',
         4096,
-        'VinaLlama-7B-Chat-Finetuned', -- Updated default model
+        'vinaLlama-7B-chat-finetuned', -- Updated default model
         'Bạn là nhà tư vấn hãy tìm hiểu về khách hàng của mình và giúp họ giải quyết vấn đề của họ.',
         0.5,
         'My home workspace.',

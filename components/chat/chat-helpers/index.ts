@@ -5,10 +5,7 @@ import { createChat } from "@/db/chats"
 import { createMessageFileItems } from "@/db/message-file-items"
 import { createMessages, updateMessage } from "@/db/messages"
 import { uploadMessageImage } from "@/db/storage/message-images"
-import {
-  buildFinalMessages,
-  buildGoogleGeminiFinalMessages
-} from "@/lib/build-prompt"
+import { buildFinalMessages } from "@/lib/build-prompt"
 import { consumeReadableStream } from "@/lib/consume-stream"
 import { Tables, TablesInsert } from "@/supabase/types"
 import {
@@ -56,7 +53,7 @@ export const handleRetrieval = async (
   userInput: string,
   newMessageFiles: ChatFile[],
   chatFiles: ChatFile[],
-  embeddingsProvider: "google" | "custom",
+  embeddingsProvider: "vilm",
   sourceCount: number
 ) => {
   const response = await fetch("/api/retrieval/retrieve", {
@@ -206,31 +203,23 @@ export const handleHostedChat = async (
 
   let formattedMessages: any
 
-  if (provider === "google") {
-    formattedMessages = await buildGoogleGeminiFinalMessages(
-      payload,
-      profile,
-      newMessageImages
-    )
-  } else {
-    formattedMessages =
-      "<s><|im_start|>system\nBạn đang trò chuyện tâm lý với người dùng."
-    const strategy = randomProperty(strategy_dict)
-    formattedMessages += ` ${strategy}`
-    const listMessages = await buildFinalMessages(payload, profile, chatImages)
+  formattedMessages =
+    "<s><|im_start|>system\nBạn đang trò chuyện tâm lý với người dùng."
+  const strategy = randomProperty(strategy_dict)
+  formattedMessages += ` ${strategy}`
+  const listMessages = await buildFinalMessages(payload, profile, chatImages)
 
-    if (listMessages.length > 3) {
-      formattedMessages +=
-        "Đây là các đoạn hội thoại trước đó của người dùng. Hãy dựa vào nó để hiểu vấn đề đang được trò chuyện:\n"
-      for (let i = 1; i < listMessages.length - 1; i++) {
-        formattedMessages += ` ${listMessages[i].role} ${listMessages[i].content} `
-      }
-    }
+  if (listMessages.length > 3) {
     formattedMessages +=
-      "<|im_end|><|im_start|>user\n" +
-      listMessages[listMessages.length - 1].content +
-      "<|im_end|><|im_start|>assistant "
+      "Đây là các đoạn hội thoại trước đó của người dùng. Hãy dựa vào nó để hiểu vấn đề đang được trò chuyện:\n"
+    for (let i = 1; i < listMessages.length - 1; i++) {
+      formattedMessages += ` ${listMessages[i].role} ${listMessages[i].content} `
+    }
   }
+  formattedMessages +=
+    "<|im_end|><|im_start|>user\n" +
+    listMessages[listMessages.length - 1].content +
+    "<|im_end|><|im_start|>assistant "
 
   // console.log("formattedMessages", formattedMessages)
 

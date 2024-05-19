@@ -1,11 +1,4 @@
-import { ModelProvider } from "."
-
-export type LLMID = GoogleLLMID | VinaLlamaLLMID
-
-// Google Models
-export type GoogleLLMID =
-  | "gemini-pro" // Gemini Pro
-  | "gemini-pro-vision" // Gemini Pro Vision
+export type LLMID = VinaLlamaLLMID
 
 export type VinaLlamaLLMID = "vinallama-7b-chat" | "vinaLlama-7B-chat-finetuned"
 
@@ -24,6 +17,4 @@ export interface LLM {
   }
 }
 
-export interface OpenRouterLLM extends LLM {
-  maxContext: number
-}
+export type ModelProvider = "vilm"

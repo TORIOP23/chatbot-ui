@@ -5,7 +5,7 @@ import { CHAT_SETTING_LIMITS } from "@/lib/chat-setting-limits"
 import { ChatSettings } from "@/types"
 import { IconInfoCircle } from "@tabler/icons-react"
 import { FC, useContext } from "react"
-import { ModelSelect } from "../models/model-select"
+import ModelSelect from "../models/model-select"
 import { AdvancedSettings } from "./advanced-settings"
 import { Checkbox } from "./checkbox"
 import { Label } from "./label"
@@ -97,23 +97,13 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
   onChangeChatSettings,
   showTooltip
 }) => {
-  const { profile, selectedWorkspace, availableOpenRouterModels, models } =
-    useContext(ChatbotUIContext)
+  const { profile, selectedWorkspace, models } = useContext(ChatbotUIContext)
 
   const isCustomModel = models.some(
     model => model.model_id === chatSettings.model
   )
 
-  function findOpenRouterModel(modelId: string) {
-    return availableOpenRouterModels.find(model => model.modelId === modelId)
-  }
-
-  const MODEL_LIMITS = CHAT_SETTING_LIMITS[chatSettings.model] || {
-    MIN_TEMPERATURE: 0,
-    MAX_TEMPERATURE: 1,
-    MAX_CONTEXT_LENGTH:
-      findOpenRouterModel(chatSettings.model)?.maxContext || 4096
-  }
+  const MODEL_LIMITS = CHAT_SETTING_LIMITS[chatSettings.model]
 
   return (
     <div className="mt-5">
@@ -219,32 +209,6 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
             }
           />
         )}
-      </div>
-
-      <div className="mt-5">
-        <Label>Embeddings Provider</Label>
-
-        <Select
-          value={chatSettings.embeddingsProvider}
-          onValueChange={(embeddingsProvider: "custom" | "google") => {
-            onChangeChatSettings({
-              ...chatSettings,
-              embeddingsProvider
-            })
-          }}
-        >
-          <SelectTrigger>
-            <SelectValue defaultValue="custom" />
-          </SelectTrigger>
-
-          <SelectContent>
-            <SelectItem value="custom">Custom (from the model)</SelectItem>
-
-            {window.location.hostname === "localhost" && (
-              <SelectItem value="local">Local</SelectItem>
-            )}
-          </SelectContent>
-        </Select>
       </div>
     </div>
   )

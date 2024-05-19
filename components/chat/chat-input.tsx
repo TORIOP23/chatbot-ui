@@ -23,7 +23,7 @@ import { useSelectFileHandler } from "./chat-hooks/use-select-file-handler"
 
 interface ChatInputProps {}
 
-export const ChatInput: FC<ChatInputProps> = ({}) => {
+export default function ChatInput({}: ChatInputProps) {
   const { t } = useTranslation()
 
   useHotkey("l", () => {

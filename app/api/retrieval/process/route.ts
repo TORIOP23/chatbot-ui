@@ -60,11 +60,11 @@ export async function POST(req: Request) {
 
     if (embeddingsProvider === "openai") {
       try {
-        if (profile.use_azure_openai) {
-          checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
-        } else {
-          checkApiKey(profile.openai_api_key, "OpenAI")
-        }
+        // if (profile.use_azure_openai) {
+        //   checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
+        // } else {
+        //   checkApiKey(profile.openai_api_key, "OpenAI")
+        // }
       } catch (error: any) {
         error.message =
           error.message +
@@ -100,29 +100,28 @@ export async function POST(req: Request) {
     let embeddings: any = []
 
     let openai
-    if (profile.use_azure_openai) {
-      openai = new OpenAI({
-        apiKey: profile.azure_openai_api_key || "",
-        baseURL: `${profile.azure_openai_endpoint}/openai/deployments/${profile.azure_openai_embeddings_id}`,
-        defaultQuery: { "api-version": "2023-12-01-preview" },
-        defaultHeaders: { "api-key": profile.azure_openai_api_key }
-      })
-    } else {
-      openai = new OpenAI({
-        apiKey: profile.openai_api_key || "",
-        organization: profile.openai_organization_id
-      })
-    }
+    // if (profile.use_azure_openai) {
+    //   openai = new OpenAI({
+    //     apiKey: profile.azure_openai_api_key || "",
+    //     baseURL: `${profile.azure_openai_endpoint}/openai/deployments/${profile.azure_openai_embeddings_id}`,
+    //     defaultQuery: { "api-version": "2023-12-01-preview" },
+    //     defaultHeaders: { "api-key": profile.azure_openai_api_key }
+    //   })
+    // } else {
+    //   openai = new OpenAI({
+    //     apiKey: profile.openai_api_key || "",
+    //     organization: profile.openai_organization_id
+    //   })
+    // }
 
     if (embeddingsProvider === "openai") {
-      const response = await openai.embeddings.create({
-        model: "text-embedding-3-small",
-        input: chunks.map(chunk => chunk.content)
-      })
-
-      embeddings = response.data.map((item: any) => {
-        return item.embedding
-      })
+      // const response = await openai.embeddings.create({
+      //   model: "text-embedding-3-small",
+      //   input: chunks.map(chunk => chunk.content)
+      // })
+      // embeddings = response.data.map((item: any) => {
+      //   return item.embedding
+      // })
     } else if (embeddingsProvider === "local") {
       const embeddingPromises = chunks.map(async chunk => {
         try {

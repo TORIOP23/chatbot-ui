@@ -1,5 +1,4 @@
 import { Database, Tables } from "@/supabase/types"
-import { VALID_ENV_KEYS } from "@/types/valid-keys"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 
@@ -30,22 +29,6 @@ export async function getServerProfile() {
 
   if (!profile) {
     throw new Error("Profile not found")
-  }
-
-  const profileWithKeys = addApiKeysToProfile(profile)
-
-  return profileWithKeys
-}
-
-function addApiKeysToProfile(profile: Tables<"profiles">) {
-  const apiKeys = {
-    [VALID_ENV_KEYS.GOOGLE_GEMINI_API_KEY]: "google_gemini_api_key"
-  }
-
-  for (const [envKey, profileKey] of Object.entries(apiKeys)) {
-    if (process.env[envKey]) {
-      ;(profile as any)[profileKey] = process.env[envKey]
-    }
   }
 
   return profile

@@ -11,7 +11,6 @@ import { supabase } from "@/lib/supabase/browser-client"
 import { TablesUpdate } from "@/supabase/types"
 import { useRouter } from "next/navigation"
 import { useContext, useEffect, useState } from "react"
-import { APIStep } from "../../../components/setup/api-step"
 import { FinishStep } from "../../../components/setup/finish-step"
 import { ProfileStep } from "../../../components/setup/profile-step"
 import {
@@ -25,7 +24,6 @@ export default function SetupPage() {
     setProfile,
     setWorkspaces,
     setSelectedWorkspace,
-    setEnvKeyMap,
     setAvailableHostedModels
   } = useContext(ChatbotUIContext)
 
@@ -39,9 +37,6 @@ export default function SetupPage() {
   const [displayName, setDisplayName] = useState("")
   const [username, setUsername] = useState(profile?.username || "")
   const [usernameAvailable, setUsernameAvailable] = useState(true)
-
-  // API Step
-  const [googleGeminiAPIKey, setGoogleGeminiAPIKey] = useState("")
 
   useEffect(() => {
     ;(async () => {
@@ -59,11 +54,10 @@ export default function SetupPage() {
         if (!profile.has_onboarded) {
           setLoading(false)
         } else {
-          const data = await fetchHostedModels(profile)
+          const data = await fetchHostedModels()
 
           if (!data) return
 
-          setEnvKeyMap(data.envKeyMap)
           setAvailableHostedModels(data.hostedModels)
 
           const homeWorkspaceId = await getHomeWorkspaceByUserId(
@@ -100,8 +94,7 @@ export default function SetupPage() {
       ...profile,
       has_onboarded: true,
       display_name: displayName,
-      username,
-      google_gemini_api_key: googleGeminiAPIKey
+      username
     }
 
     const updatedProfile = await updateProfile(profile.id, updateProfilePayload)
@@ -140,27 +133,8 @@ export default function SetupPage() {
             />
           </StepContainer>
         )
-
-      // API Step
-      case 2:
-        return (
-          <StepContainer
-            stepDescription="Nhập khóa API cho mỗi dịch vụ bạn muốn sử dụng."
-            stepNum={currentStep}
-            stepTitle="Thiết lập khóa API (không bắt buộc)"
-            onShouldProceed={handleShouldProceed}
-            showNextButton={true}
-            showBackButton={true}
-          >
-            <APIStep
-              googleGeminiAPIKey={googleGeminiAPIKey}
-              onGoogleGeminiAPIKeyChange={setGoogleGeminiAPIKey}
-            />
-          </StepContainer>
-        )
-
       // Finish Step
-      case 3:
+      case 2:
         return (
           <StepContainer
             stepDescription="Bạn đã hoàn thành thiết lập."

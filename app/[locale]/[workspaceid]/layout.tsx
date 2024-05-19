@@ -156,7 +156,8 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
     setModels(modelData.models)
 
     setChatSettings({
-      model: (workspace?.default_model || "my chat bot") as LLMID,
+      model: (workspace?.default_model ||
+        "vinaLlama-7B-chat-finetuned") as LLMID,
       prompt:
         workspace?.default_prompt ||
         "Bạn là một trợ lý AI thân thiện và hữu ích.",
@@ -165,8 +166,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
       includeProfileContext: workspace?.include_profile_context || true,
       includeWorkspaceInstructions:
         workspace?.include_workspace_instructions || true,
-      embeddingsProvider:
-        (workspace?.embeddings_provider as "custom" | "google") || "google"
+      embeddingsProvider: (workspace?.embeddings_provider as "vilm") || "vilm"
     })
 
     setLoading(false)

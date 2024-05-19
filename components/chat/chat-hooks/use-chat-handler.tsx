@@ -39,8 +39,6 @@ export const useChatHandler = () => {
     setSelectedChat,
     setChats,
     setSelectedTools,
-    availableLocalModels,
-    availableOpenRouterModels,
     abortController,
     setAbortController,
     chatSettings,
@@ -108,9 +106,7 @@ export const useChatHandler = () => {
         includeProfileContext: selectedAssistant.include_profile_context,
         includeWorkspaceInstructions:
           selectedAssistant.include_workspace_instructions,
-        embeddingsProvider: selectedAssistant.embeddings_provider as
-          | "google"
-          | "custom"
+        embeddingsProvider: selectedAssistant.embeddings_provider as "vilm"
       })
 
       let allFiles = []
@@ -152,9 +148,7 @@ export const useChatHandler = () => {
         includeProfileContext: selectedPreset.include_profile_context,
         includeWorkspaceInstructions:
           selectedPreset.include_workspace_instructions,
-        embeddingsProvider: selectedPreset.embeddings_provider as
-          | "google"
-          | "custom"
+        embeddingsProvider: selectedPreset.embeddings_provider as "vilm"
       })
     } else if (selectedWorkspace) {
       // setChatSettings({
@@ -213,9 +207,7 @@ export const useChatHandler = () => {
           platformLink: "",
           imageInput: false
         })),
-        ...LLM_LIST,
-        ...availableLocalModels,
-        ...availableOpenRouterModels
+        ...LLM_LIST
       ].find(llm => llm.modelId === chatSettings?.model)
 
       validateChatSettings(

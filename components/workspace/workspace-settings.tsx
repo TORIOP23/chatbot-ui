@@ -136,8 +136,7 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
         includeWorkspaceInstructions:
           defaultChatSettings.includeWorkspaceInstructions,
         embeddingsProvider:
-          (defaultChatSettings.embeddingsProvider as "custom" | "google") ||
-          "google"
+          (defaultChatSettings.embeddingsProvider as "vilm") || "vilm"
       })
     }
 

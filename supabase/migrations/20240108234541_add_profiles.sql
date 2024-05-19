@@ -20,10 +20,7 @@ CREATE TABLE IF NOT EXISTS profiles (
     image_path TEXT NOT NULL CHECK (char_length(image_path) <= 1000), -- file path in profile_images bucket
     profile_context TEXT NOT NULL CHECK (char_length(profile_context) <= 1500),
     display_name TEXT NOT NULL CHECK (char_length(display_name) <= 100),
-    username TEXT NOT NULL UNIQUE CHECK (char_length(username) >= 3 AND char_length(username) <= 25),
-
-    -- OPTIONAL
-    google_gemini_api_key TEXT CHECK (char_length(google_gemini_api_key) <= 1000)
+    username TEXT NOT NULL UNIQUE CHECK (char_length(username) >= 3 AND char_length(username) <= 25)
 );
 
 -- INDEXES --
@@ -84,10 +81,9 @@ BEGIN
     random_username := 'user' || substr(replace(gen_random_uuid()::text, '-', ''), 1, 16);
 
     -- Create a profile for the new user
-    INSERT INTO public.profiles(user_id, google_gemini_api_key, has_onboarded, image_url, image_path, display_name, bio, profile_context, username)
+    INSERT INTO public.profiles(user_id, has_onboarded, image_url, image_path, display_name, bio, profile_context, username)
     VALUES(
         NEW.id,
-        '',
         FALSE,
         '',
         '',
@@ -104,11 +100,11 @@ BEGIN
         TRUE,
         'Home',
         4096,
-        'VinaLlama-7B-Chat-Finetuned',
+        'vinaLlama-7B-chat-finetuned',
         'Bạn là nhà tư vấn hãy tìm hiểu về khách hàng của mình và giúp họ giải quyết vấn đề của họ.',
         0.5,
         'My home workspace.',
-        'custom',
+        'vilm',
         TRUE,
         TRUE,
         ''

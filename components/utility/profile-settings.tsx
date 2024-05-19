@@ -8,10 +8,8 @@ import {
 import { updateProfile } from "@/db/profile"
 import { uploadProfileImage } from "@/db/storage/profile-images"
 import { exportLocalStorageAsJSON } from "@/lib/export-old-data"
-import { fetchOpenRouterModels } from "@/lib/models/fetch-models"
 import { LLM_LIST_MAP } from "@/lib/models/llm/llm-list"
 import { supabase } from "@/lib/supabase/browser-client"
-import { OpenRouterLLM } from "@/types"
 import {
   IconCircleCheckFilled,
   IconCircleXFilled,
@@ -45,14 +43,8 @@ import { ThemeSwitcher } from "./theme-switcher"
 interface ProfileSettingsProps {}
 
 export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
-  const {
-    profile,
-    setProfile,
-    envKeyMap,
-    setAvailableHostedModels,
-    setAvailableOpenRouterModels,
-    availableOpenRouterModels
-  } = useContext(ChatbotUIContext)
+  const { profile, setProfile, setAvailableHostedModels } =
+    useContext(ChatbotUIContext)
 
   const router = useRouter()
 
@@ -70,9 +62,6 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null)
   const [profileInstructions, setProfileInstructions] = useState(
     profile?.profile_context || ""
-  )
-  const [googleGeminiAPIKey, setGoogleGeminiAPIKey] = useState(
-    profile?.google_gemini_api_key || ""
   )
 
   const handleSignOut = async () => {
@@ -99,61 +88,20 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
       username,
       profile_context: profileInstructions,
       image_url: profileImageUrl,
-      image_path: profileImagePath,
-      google_gemini_api_key: googleGeminiAPIKey
+      image_path: profileImagePath
     })
 
     setProfile(updatedProfile)
 
     toast.success("Profile updated!")
 
-    const providers = ["google"]
+    const models = LLM_LIST_MAP["vilm"]
 
-    providers.forEach(async provider => {
-      let providerKey: keyof typeof profile
-
-      if (provider === "google") {
-        providerKey = "google_gemini_api_key"
-      }
-
-      const models = LLM_LIST_MAP[provider]
-      const envKeyActive = envKeyMap[provider]
-
-      if (!envKeyActive) {
-        // const hasApiKey = !!updatedProfile[providerKey]
-        const hasApiKey = false
-
-        if (provider === "openrouter") {
-          if (hasApiKey && availableOpenRouterModels.length === 0) {
-            const openrouterModels: OpenRouterLLM[] =
-              await fetchOpenRouterModels()
-            setAvailableOpenRouterModels(prev => {
-              const newModels = openrouterModels.filter(
-                model =>
-                  !prev.some(prevModel => prevModel.modelId === model.modelId)
-              )
-              return [...prev, ...newModels]
-            })
-          } else {
-            setAvailableOpenRouterModels([])
-          }
-        } else {
-          if (hasApiKey && Array.isArray(models)) {
-            setAvailableHostedModels(prev => {
-              const newModels = models.filter(
-                model =>
-                  !prev.some(prevModel => prevModel.modelId === model.modelId)
-              )
-              return [...prev, ...newModels]
-            })
-          } else if (!hasApiKey && Array.isArray(models)) {
-            setAvailableHostedModels(prev =>
-              prev.filter(model => !models.includes(model))
-            )
-          }
-        }
-      }
-    })
+    if (Array.isArray(models)) {
+      setAvailableHostedModels(prev =>
+        prev.filter(model => !models.includes(model))
+      )
+    }
 
     setIsOpen(false)
   }
@@ -264,123 +212,93 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
             </SheetTitle>
           </SheetHeader>
 
-          <Tabs defaultValue="profile">
-            <TabsList className="mt-4 grid w-full grid-cols-2">
-              <TabsTrigger value="profile">Profile</TabsTrigger>
-              <TabsTrigger value="keys">API Keys</TabsTrigger>
-            </TabsList>
+          <div className="mt-6 space-y-4">
+            <div className="flex items-center space-x-2">
+              <Label>Username</Label>
 
-            <TabsContent className="mt-4 space-y-4" value="profile">
-              <div className="space-y-1">
-                <div className="flex items-center space-x-2">
-                  <Label>Username</Label>
+              <div className="text-xs">
+                {username !== profile.username ? (
+                  usernameAvailable ? (
+                    <div className="text-green-500">AVAILABLE</div>
+                  ) : (
+                    <div className="text-red-500">UNAVAILABLE</div>
+                  )
+                ) : null}
+              </div>
+            </div>
 
-                  <div className="text-xs">
-                    {username !== profile.username ? (
-                      usernameAvailable ? (
-                        <div className="text-green-500">AVAILABLE</div>
-                      ) : (
-                        <div className="text-red-500">UNAVAILABLE</div>
-                      )
-                    ) : null}
-                  </div>
+            <div className="relative">
+              <Input
+                className="pr-10"
+                placeholder="Username..."
+                value={username}
+                onChange={e => {
+                  setUsername(e.target.value)
+                  checkUsernameAvailability(e.target.value)
+                }}
+                minLength={PROFILE_USERNAME_MIN}
+                maxLength={PROFILE_USERNAME_MAX}
+              />
+
+              {username !== profile.username ? (
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                  {loadingUsername ? (
+                    <IconLoader2 className="animate-spin" />
+                  ) : usernameAvailable ? (
+                    <IconCircleCheckFilled className="text-green-500" />
+                  ) : (
+                    <IconCircleXFilled className="text-red-500" />
+                  )}
                 </div>
+              ) : null}
+            </div>
 
-                <div className="relative">
-                  <Input
-                    className="pr-10"
-                    placeholder="Username..."
-                    value={username}
-                    onChange={e => {
-                      setUsername(e.target.value)
-                      checkUsernameAvailability(e.target.value)
-                    }}
-                    minLength={PROFILE_USERNAME_MIN}
-                    maxLength={PROFILE_USERNAME_MAX}
-                  />
+            <LimitDisplay used={username.length} limit={PROFILE_USERNAME_MAX} />
+          </div>
 
-                  {username !== profile.username ? (
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                      {loadingUsername ? (
-                        <IconLoader2 className="animate-spin" />
-                      ) : usernameAvailable ? (
-                        <IconCircleCheckFilled className="text-green-500" />
-                      ) : (
-                        <IconCircleXFilled className="text-red-500" />
-                      )}
-                    </div>
-                  ) : null}
-                </div>
+          <div className="space-y-1">
+            <Label>Profile Image</Label>
 
-                <LimitDisplay
-                  used={username.length}
-                  limit={PROFILE_USERNAME_MAX}
-                />
-              </div>
+            <ImagePicker
+              src={profileImageSrc}
+              image={profileImageFile}
+              height={50}
+              width={50}
+              onSrcChange={setProfileImageSrc}
+              onImageChange={setProfileImageFile}
+            />
+          </div>
 
-              <div className="space-y-1">
-                <Label>Profile Image</Label>
+          <div className="space-y-1">
+            <Label>Chat Display Name</Label>
 
-                <ImagePicker
-                  src={profileImageSrc}
-                  image={profileImageFile}
-                  height={50}
-                  width={50}
-                  onSrcChange={setProfileImageSrc}
-                  onImageChange={setProfileImageFile}
-                />
-              </div>
+            <Input
+              placeholder="Chat display name..."
+              value={displayName}
+              onChange={e => setDisplayName(e.target.value)}
+              maxLength={PROFILE_DISPLAY_NAME_MAX}
+            />
+          </div>
 
-              <div className="space-y-1">
-                <Label>Chat Display Name</Label>
+          <div className="space-y-1">
+            <Label className="text-sm">
+              What would you like the AI to know about you to provide better
+              responses?
+            </Label>
 
-                <Input
-                  placeholder="Chat display name..."
-                  value={displayName}
-                  onChange={e => setDisplayName(e.target.value)}
-                  maxLength={PROFILE_DISPLAY_NAME_MAX}
-                />
-              </div>
+            <TextareaAutosize
+              value={profileInstructions}
+              onValueChange={setProfileInstructions}
+              placeholder="Profile context... (optional)"
+              minRows={6}
+              maxRows={10}
+            />
 
-              <div className="space-y-1">
-                <Label className="text-sm">
-                  What would you like the AI to know about you to provide better
-                  responses?
-                </Label>
-
-                <TextareaAutosize
-                  value={profileInstructions}
-                  onValueChange={setProfileInstructions}
-                  placeholder="Profile context... (optional)"
-                  minRows={6}
-                  maxRows={10}
-                />
-
-                <LimitDisplay
-                  used={profileInstructions.length}
-                  limit={PROFILE_CONTEXT_MAX}
-                />
-              </div>
-            </TabsContent>
-
-            <TabsContent className="mt-4 space-y-4" value="keys">
-              <div className="space-y-1">
-                {envKeyMap["google"] ? (
-                  <Label>Google Gemini API key set by admin.</Label>
-                ) : (
-                  <>
-                    <Label>Google Gemini API Key</Label>
-                    <Input
-                      placeholder="Google Gemini API Key"
-                      type="password"
-                      value={googleGeminiAPIKey}
-                      onChange={e => setGoogleGeminiAPIKey(e.target.value)}
-                    />
-                  </>
-                )}
-              </div>
-            </TabsContent>
-          </Tabs>
+            <LimitDisplay
+              used={profileInstructions.length}
+              limit={PROFILE_CONTEXT_MAX}
+            />
+          </div>
         </div>
 
         <div className="mt-6 flex items-center">
