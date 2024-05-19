@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS profiles (
     username TEXT NOT NULL UNIQUE CHECK (char_length(username) >= 3 AND char_length(username) <= 25),
 
     -- OPTIONAL
-    google_gemini_api_key TEXT CHECK (char_length(google_gemini_api_key) <= 1000),
+    google_gemini_api_key TEXT CHECK (char_length(google_gemini_api_key) <= 1000)
 );
 
 -- INDEXES --

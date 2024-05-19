@@ -10,21 +10,21 @@ const buildBasePrompt = (
 ) => {
   let fullPrompt = ""
 
-  if (assistant) {
-    fullPrompt += `<INJECT ROLE>\nYou are not an AI. You are ${assistant.name}.\n</INJECT ROLE>\n\n`
-  }
+  // if (assistant) {
+  //   fullPrompt += `<INJECT ROLE>\nYou are not an AI. You are ${assistant?.name}.\n</INJECT ROLE>\n\n`
+  // }
 
-  fullPrompt += `Today is ${new Date().toLocaleDateString()}.\n\n`
+  // fullPrompt += `Hôm nay là ${new Date().toLocaleDateString()}.\n\n`
 
-  if (profileContext) {
-    fullPrompt += `User Info:\n${profileContext}\n\n`
-  }
+  // if (profileContext) {
+  //   fullPrompt += `Thông tin người dùng:\n${profileContext}\n\n`
+  // }
 
-  if (workspaceInstructions) {
-    fullPrompt += `System Instructions:\n${workspaceInstructions}\n\n`
-  }
+  // if (workspaceInstructions) {
+  //   fullPrompt += `System Instructions:\n${workspaceInstructions}\n\n`
+  // }
 
-  fullPrompt += `User Instructions:\n${prompt}`
+  // fullPrompt += `User Instructions:\n${prompt}`
 
   return fullPrompt
 }
@@ -50,13 +50,13 @@ export async function buildFinalMessages(
     assistant
   )
 
-  const CHUNK_SIZE = chatSettings.contextLength
-  const PROMPT_TOKENS = encode(chatSettings.prompt).length
+  // const CHUNK_SIZE = chatSettings.contextLength
+  // const PROMPT_TOKENS = encode(chatSettings.prompt).length
 
-  let remainingTokens = CHUNK_SIZE - PROMPT_TOKENS
+  // let remainingTokens = CHUNK_SIZE - PROMPT_TOKENS
 
-  let usedTokens = 0
-  usedTokens += PROMPT_TOKENS
+  // let usedTokens = 0
+  // usedTokens += PROMPT_TOKENS
 
   const processedChatMessages = chatMessages.map((chatMessage, index) => {
     const nextChatMessage = chatMessages[index + 1]
@@ -93,15 +93,15 @@ export async function buildFinalMessages(
 
   for (let i = processedChatMessages.length - 1; i >= 0; i--) {
     const message = processedChatMessages[i].message
-    const messageTokens = encode(message.content).length
+    // const messageTokens = encode(message.content).length
 
-    if (messageTokens <= remainingTokens) {
-      remainingTokens -= messageTokens
-      usedTokens += messageTokens
-      finalMessages.unshift(message)
-    } else {
-      break
-    }
+    // if (messageTokens <= remainingTokens) {
+    //   remainingTokens -= messageTokens
+    //   usedTokens += messageTokens
+    finalMessages.unshift(message)
+    // } else {
+    //   break
+    // }
   }
 
   let tempSystemMessage: Tables<"messages"> = {

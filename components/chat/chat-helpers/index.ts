@@ -22,6 +22,7 @@ import {
 import React from "react"
 import { toast } from "sonner"
 import { v4 as uuidv4 } from "uuid"
+import { randomProperty, strategy_dict } from "./strategy"
 
 export const validateChatSettings = (
   chatSettings: ChatSettings | null,
@@ -55,7 +56,7 @@ export const handleRetrieval = async (
   userInput: string,
   newMessageFiles: ChatFile[],
   chatFiles: ChatFile[],
-  embeddingsProvider: "openai" | "local",
+  embeddingsProvider: "google" | "custom",
   sourceCount: number
 ) => {
   const response = await fetch("/api/retrieval/retrieve", {
@@ -203,7 +204,7 @@ export const handleHostedChat = async (
 ) => {
   const provider = modelData.provider
 
-  let formattedMessages = []
+  let formattedMessages: any
 
   if (provider === "google") {
     formattedMessages = await buildGoogleGeminiFinalMessages(
@@ -212,38 +213,74 @@ export const handleHostedChat = async (
       newMessageImages
     )
   } else {
-    formattedMessages = await buildFinalMessages(payload, profile, chatImages)
+    formattedMessages =
+      "<s><|im_start|>system\nBạn đang trò chuyện tâm lý với người dùng."
+    const strategy = randomProperty(strategy_dict)
+    formattedMessages += ` ${strategy}`
+    const listMessages = await buildFinalMessages(payload, profile, chatImages)
+
+    if (listMessages.length > 3) {
+      formattedMessages +=
+        "Đây là các đoạn hội thoại trước đó của người dùng. Hãy dựa vào nó để hiểu vấn đề đang được trò chuyện:\n"
+      for (let i = 1; i < listMessages.length - 1; i++) {
+        formattedMessages += ` ${listMessages[i].role} ${listMessages[i].content} `
+      }
+    }
+    formattedMessages +=
+      "<|im_end|><|im_start|>user\n" +
+      listMessages[listMessages.length - 1].content +
+      "<|im_end|><|im_start|>assistant "
   }
 
+  // console.log("formattedMessages", formattedMessages)
+
   const apiEndpoint =
-    provider === "custom" ? "/api/chat/custom" : `/api/chat/${provider}`
+    provider === "vilm" ? "/api/chat/vinallama" : `/api/chat/${provider}`
 
   const requestBody = {
     chatSettings: payload.chatSettings,
     messages: formattedMessages,
-    customModelId: provider === "custom" ? modelData.hostedId : ""
+    customModelId: provider === "vilm" ? modelData.hostedId : ""
   }
 
-  const response = await fetchChatResponse(
-    apiEndpoint,
-    requestBody,
-    true,
-    newAbortController,
-    setIsGenerating,
-    setChatMessages
-  )
+  // const response = await fetchChatResponse(
+  //   apiEndpoint,
+  //   requestBody,
+  //   true,
+  //   newAbortController,
+  //   setIsGenerating,
+  //   setChatMessages
+  // )
 
-  return await processResponse(
-    response,
-    isRegeneration
-      ? payload.chatMessages[payload.chatMessages.length - 1]
-      : tempAssistantChatMessage,
-    true,
-    newAbortController,
-    setFirstTokenReceived,
-    setChatMessages,
-    setToolInUse
-  )
+  const url =
+    process.env.NEXT_PUBLIC_API_CUSTOM_MODEL ||
+    "https://1f2e-35-229-233-191.ngrok-free.app/chat"
+  const body = {
+    messages: formattedMessages
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  })
+
+  return response
+
+  // return await processResponse(
+  //   response,
+  //   isRegeneration
+  //     ? payload.chatMessages[payload.chatMessages.length - 1]
+  //     : tempAssistantChatMessage,
+  //   true,
+  //   newAbortController,
+  //   setFirstTokenReceived,
+  //   setChatMessages,
+  //   setToolInUse
+  // )
 }
 
 export const fetchChatResponse = async (

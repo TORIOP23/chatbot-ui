@@ -1,1 +1,1 @@
-export type ModelProvider = "google" | "custom"
+export type ModelProvider = "google" | "vilm"

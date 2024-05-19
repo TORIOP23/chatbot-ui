@@ -226,7 +226,7 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
 
         <Select
           value={chatSettings.embeddingsProvider}
-          onValueChange={(embeddingsProvider: "openai" | "local") => {
+          onValueChange={(embeddingsProvider: "custom" | "google") => {
             onChangeChatSettings({
               ...chatSettings,
               embeddingsProvider
@@ -234,13 +234,11 @@ const AdvancedContent: FC<AdvancedContentProps> = ({
           }}
         >
           <SelectTrigger>
-            <SelectValue defaultValue="openai" />
+            <SelectValue defaultValue="custom" />
           </SelectTrigger>
 
           <SelectContent>
-            <SelectItem value="openai">
-              {profile?.use_azure_openai ? "Azure OpenAI" : "OpenAI"}
-            </SelectItem>
+            <SelectItem value="custom">Custom (from the model)</SelectItem>
 
             {window.location.hostname === "localhost" && (
               <SelectItem value="local">Local</SelectItem>

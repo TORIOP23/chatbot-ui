@@ -2,11 +2,7 @@
 
 The open-source AI chat app for everyone.
 
-<img src="./public/readme/screenshot.png" alt="Chatbot UI" width="600">
-
-## Demo
-
-View the latest demo [here]().
+<!-- <img src="./public/readme/screenshot.png" alt="Chatbot UI" width="600"> -->
 
 ## Updating
 
@@ -24,12 +20,6 @@ npm run db-push
 
 to apply the latest migrations to your live database.
 
-## Local Quickstart
-
-Follow these steps to get your own Chatbot UI instance running locally.
-
-You can watch the full video tutorial [here](https://www.youtube.com/watch?v=9Qq3-7-HNgw).
-
 ### 1. Clone the Repo
 
 ```bash
@@ -42,35 +32,6 @@ Open a terminal in the root directory of your local Chatbot UI repository and ru
 
 ```bash
 npm install
-```
-
-### 3. Install Supabase & Run Locally
-
-#### 1. Install Docker
-
-You will need to install Docker to run Supabase locally. You can download it [here](https://docs.docker.com/get-docker) for free.
-
-#### 2. Install Supabase CLI
-
-**MacOS/Linux**
-
-```bash
-brew install supabase/tap/supabase
-```
-
-**Windows**
-
-```bash
-scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
-scoop install supabase
-```
-
-#### 3. Start Supabase
-
-In your terminal at the root of your local Chatbot UI repository, run:
-
-```bash
-supabase start
 ```
 
 ### 4. Fill in Secrets
@@ -97,28 +58,12 @@ If the environment variable is set, it will disable the input in the user settin
 
 #### 2. SQL Setup
 
-In the 1st migration file `supabase/migrations/20240108234540_setup.sql` you will need to replace 2 values with the values you got above:
+In the 1st migration file `supabase/migrations/setup.sql` you will need to replace 2 values with the values you got above:
 
 - `project_url` (line 53): `http://supabase_kong_chatbotui:8000` (default) can remain unchanged if you don't change your `project_id` in the `config.toml` file
 - `service_role_key` (line 54): You got this value from running `supabase status`
 
 This prevents issues with storage files not being deleted properly.
-
-### 5. Install Ollama (optional for local models)
-
-Follow the instructions [here](https://github.com/jmorganca/ollama#macos).
-
-### 6. Run app locally
-
-In your terminal at the root of your local Chatbot UI repository, run:
-
-```bash
-npm run chat
-```
-
-Your local instance of Chatbot UI should now be running at [http://localhost:3000](http://localhost:3000). Be sure to use a compatible node version (i.e. v18).
-
-You can view your backend GUI at [http://localhost:54323/project/default/editor](http://localhost:54323/project/default/editor).
 
 ## Hosted Quickstart
 
@@ -126,13 +71,20 @@ Follow these steps to get your own Chatbot UI instance running in the cloud.
 
 Video tutorial coming soon.
 
-### 1. Follow Local Quickstart
+### 1. Install Supabase CLI
 
-Repeat steps 1-4 in "Local Quickstart" above.
+**MacOS/Linux**
 
-You will want separate repositories for your local and hosted instances.
+```bash
+brew install supabase/tap/supabase
+```
 
-Create a new repository for your hosted instance of Chatbot UI on GitHub and push your code to it.
+**Windows**
+
+```bash
+scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+scoop install supabase
+```
 
 ### 2. Setup Backend with Supabase
 
@@ -172,7 +124,7 @@ We recommend turning off "Confirm email" for your own personal instance.
 
 Open up your repository for your hosted instance of Chatbot UI.
 
-In the 1st migration file `supabase/migrations/20240108234540_setup.sql` you will need to replace 2 values with the values you got above:
+In the 1st migration file `supabase/migrations/setup.sql` you will need to replace 2 values with the values you got above:
 
 - `project_url` (line 53): Use the `Project URL` value from above
 - `service_role_key` (line 54): Use the `Service role key` value from above
@@ -201,6 +153,16 @@ supabase db push
 
 Your hosted database should now be set up!
 
+### 3. Run app locally
+
+In your terminal at the root of your local Chatbot UI repository, run:
+
+```bash
+npm run dev
+```
+
+Your local instance of Chatbot UI should now be running at [http://localhost:3000](http://localhost:3000).
+
 ### 3. Setup Frontend with Vercel
 
 Go to [Vercel](https://vercel.com/) and create a new project.
@@ -212,7 +174,6 @@ In environment variables, add the following from the values you got above:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `NEXT_PUBLIC_OLLAMA_URL` (only needed when using local Ollama models; default: `http://localhost:11434`)
 
 For the full list of environment variables, refer to the '.env.local.example' file. If the environment variables are set for API keys, it will disable the input in the user settings.
 
