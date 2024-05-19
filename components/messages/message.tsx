@@ -3,7 +3,7 @@ import { ChatbotUIContext } from "@/context/context"
 import { LLM_LIST } from "@/lib/models/llm/llm-list"
 import { cn } from "@/lib/utils"
 import { Tables } from "@/supabase/types"
-import { LLM, LLMID, MessageImage, ModelProvider } from "@/types"
+import { LLM, LLMID, MessageImage } from "@/types"
 import {
   IconBolt,
   IconCaretDownFilled,
@@ -128,7 +128,6 @@ export const Message: FC<MessageProps> = ({
     ...models.map(model => ({
       modelId: model.model_id as LLMID,
       modelName: model.name,
-      provider: "custom" as ModelProvider,
       hostedId: model.id,
       platformLink: "",
       imageInput: false
@@ -225,13 +224,7 @@ export const Message: FC<MessageProps> = ({
                 ) : (
                   <WithTooltip
                     display={<div>{MODEL_DATA?.modelName}</div>}
-                    trigger={
-                      <ModelIcon
-                        provider={modelDetails?.provider || "vilm"}
-                        height={ICON_SIZE}
-                        width={ICON_SIZE}
-                      />
-                    }
+                    trigger={<ModelIcon height={ICON_SIZE} width={ICON_SIZE} />}
                   />
                 )
               ) : profile?.image_url ? (

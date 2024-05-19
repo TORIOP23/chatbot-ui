@@ -2,74 +2,15 @@
 
 The open-source AI chat app for everyone.
 
-## Updating
-
-In your terminal at the root of your local Chatbot UI repository, run:
-
-```bash
-npm run update
-```
-
-If you run a hosted instance you'll also need to run:
-
-```bash
-npm run db-push
-```
-
-to apply the latest migrations to your live database.
-
-### 1. Clone the Repo
-
-```bash
-git clone
-```
-
-### 2. Install Dependencies
-
-Open a terminal in the root directory of your local Chatbot UI repository and run:
+## 1. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 4. Fill in Secrets
+## 2. Hosted Quickstart
 
-#### 1. Environment Variables
-
-In your terminal at the root of your local Chatbot UI repository, run:
-
-```bash
-cp .env.local.example .env.local
-```
-
-Get the required values by running:
-
-```bash
-supabase status
-```
-
-Note: Use `API URL` from `supabase status` for `NEXT_PUBLIC_SUPABASE_URL`
-
-Now go to your `.env.local` file and fill in the values.
-
-If the environment variable is set, it will disable the input in the user settings.
-
-#### 2. SQL Setup
-
-In the 1st migration file `supabase/migrations/setup.sql` you will need to replace 2 values with the values you got above:
-
-- `project_url` (line 53): `http://supabase_kong_chatbotui:8000` (default) can remain unchanged if you don't change your `project_id` in the `config.toml` file
-- `service_role_key` (line 54): You got this value from running `supabase status`
-
-This prevents issues with storage files not being deleted properly.
-
-## Hosted Quickstart
-
-Follow these steps to get your own Chatbot UI instance running in the cloud.
-
-Video tutorial coming soon.
-
-### 1. Install Supabase CLI
+### 2.1. Install Supabase CLI
 
 **MacOS/Linux**
 
@@ -84,15 +25,15 @@ scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
 scoop install supabase
 ```
 
-### 2. Setup Backend with Supabase
+### 2.2. Setup Backend with Supabase
 
-#### 1. Create a new project
+#### 2.2.1. Create a new project
 
 Go to [Supabase](https://supabase.com/) and create a new project.
 
-#### 2. Get Project Values
+#### 2.2.2. Get Project Values
 
-Once you are in the project dashboard, click on the "Project Settings" icon tab on the far bottom left.
+- Click on the "Project Settings" icon tab on the far bottom left.
 
 Here you will get the values for the following environment variables:
 
@@ -110,7 +51,7 @@ Here you will get the values for the following environment variables:
 
 - `Service role key`: Found in "Project API keys" as "service_role" (Reminder: Treat this like a password!)
 
-#### 3. Configure Auth
+#### 2.2.3. Configure Auth
 
 Next, click on the "Authentication" icon tab on the far left.
 
@@ -118,9 +59,7 @@ In the text tabs, click on "Providers" and make sure "Email" is enabled.
 
 We recommend turning off "Confirm email" for your own personal instance.
 
-#### 4. Connect to Hosted DB
-
-Open up your repository for your hosted instance of Chatbot UI.
+#### 2.2.4. Connect to Hosted DB
 
 In the 1st migration file `supabase/migrations/setup.sql` you will need to replace 2 values with the values you got above:
 
@@ -151,9 +90,19 @@ supabase db push
 
 Your hosted database should now be set up!
 
-### 3. Run app locally
+#### 2.2.5. Environment Variables
 
 In your terminal at the root of your local Chatbot UI repository, run:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Now go to your `.env.local` file and fill in the values.
+
+If the environment variable is set, it will disable the input in the user settings.
+
+### 2.3. Run app locally
 
 ```bash
 npm run dev
@@ -161,7 +110,7 @@ npm run dev
 
 Your local instance of Chatbot UI should now be running at [http://localhost:3000](http://localhost:3000).
 
-### 3. Setup Frontend with Vercel
+## 3. Setup Frontend with Vercel
 
 Go to [Vercel](https://vercel.com/) and create a new project.
 
@@ -178,3 +127,19 @@ For the full list of environment variables, refer to the '.env.local.example' fi
 Click "Deploy" and wait for your frontend to deploy.
 
 Once deployed, you should be able to use your hosted instance of Chatbot UI via the URL Vercel gives you.
+
+## Updating
+
+In your terminal at the root of your local Chatbot UI repository, run:
+
+```bash
+npm run update
+```
+
+If you run a hosted instance you'll also need to run:
+
+```bash
+npm run db-push
+```
+
+to apply the latest migrations to your live database.

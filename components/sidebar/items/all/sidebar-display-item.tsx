@@ -53,8 +53,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
         model: assistant.model,
         name: `Chat with ${assistant.name}`,
         prompt: assistant.prompt,
-        temperature: assistant.temperature,
-        embeddings_provider: assistant.embeddings_provider
+        temperature: assistant.temperature
       })
 
       setChats(prevState => [createdChat, ...prevState])

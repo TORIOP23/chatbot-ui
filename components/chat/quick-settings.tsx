@@ -112,9 +112,7 @@ export default function QuickSettings({}: QuickSettingsProps) {
           contextLength: selectedWorkspace.default_context_length,
           includeProfileContext: selectedWorkspace.include_profile_context,
           includeWorkspaceInstructions:
-            selectedWorkspace.include_workspace_instructions,
-          embeddingsProvider:
-            (selectedWorkspace.embeddings_provider as "vilm") || "vilm"
+            selectedWorkspace.include_workspace_instructions
         })
       }
       return
@@ -126,8 +124,7 @@ export default function QuickSettings({}: QuickSettingsProps) {
       temperature: item.temperature,
       contextLength: item.context_length,
       includeProfileContext: item.include_profile_context,
-      includeWorkspaceInstructions: item.include_workspace_instructions,
-      embeddingsProvider: (item.embeddings_provider as "vilm") || "vilm"
+      includeWorkspaceInstructions: item.include_workspace_instructions
     })
   }
 
@@ -191,13 +188,7 @@ export default function QuickSettings({}: QuickSettingsProps) {
     >
       <DropdownMenuTrigger asChild className="max-w-[400px]" disabled={loading}>
         <Button variant="ghost" className="flex space-x-3 text-lg">
-          {selectedPreset && (
-            <ModelIcon
-              provider={modelDetails?.provider || "vilm"}
-              width={32}
-              height={32}
-            />
-          )}
+          {selectedPreset && <ModelIcon width={32} height={32} />}
 
           {selectedAssistant &&
             (selectedAssistantImage ? (

@@ -75,7 +75,7 @@ BEGIN
         random_username
     );
 
-    INSERT INTO public.workspaces(user_id, is_home, name, default_context_length, default_model, default_prompt, default_temperature, description, embeddings_provider, include_profile_context, include_workspace_instructions, instructions)
+    INSERT INTO public.workspaces(user_id, is_home, name, default_context_length, default_model, default_prompt, default_temperature, description, include_profile_context, include_workspace_instructions, instructions)
     VALUES(
         NEW.id,
         TRUE,
@@ -85,7 +85,6 @@ BEGIN
         'Bạn là nhà tư vấn hãy tìm hiểu về khách hàng của mình và giúp họ giải quyết vấn đề của họ.',
         0.5,
         'My home workspace.',
-        'custom',
         TRUE,
         TRUE,
         ''

@@ -5,7 +5,6 @@ export type VinaLlamaLLMID = "vinallama-7b-chat" | "vinaLlama-7B-chat-finetuned"
 export interface LLM {
   modelId: LLMID
   modelName: string
-  provider: ModelProvider
   hostedId: string
   platformLink: string
   imageInput: boolean
@@ -16,5 +15,3 @@ export interface LLM {
     outputCost?: number
   }
 }
-
-export type ModelProvider = "vilm"

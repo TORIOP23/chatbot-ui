@@ -6,10 +6,9 @@ import OpenAI from "openai"
 
 export async function POST(request: Request) {
   const json = await request.json()
-  const { userInput, fileIds, embeddingsProvider, sourceCount } = json as {
+  const { userInput, fileIds, sourceCount } = json as {
     userInput: string
     fileIds: string[]
-    embeddingsProvider: "openai" | "local"
     sourceCount: number
   }
 
@@ -22,14 +21,6 @@ export async function POST(request: Request) {
     )
 
     const profile = await getServerProfile()
-
-    // if (embeddingsProvider === "openai") {
-    //   if (profile.use_azure_openai) {
-    //     checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
-    //   } else {
-    //     checkApiKey(profile.openai_api_key, "OpenAI")
-    //   }
-    // }
 
     let chunks: any[] = []
 
@@ -48,38 +39,38 @@ export async function POST(request: Request) {
     //   })
     // }
 
-    if (embeddingsProvider === "openai") {
-      // const response = await openai.embeddings.create({
-      //   model: "text-embedding-3-small",
-      //   input: userInput
-      // })
-      // const openaiEmbedding = response.data.map(item => item.embedding)[0]
-      // const { data: openaiFileItems, error: openaiError } =
-      //   await supabaseAdmin.rpc("match_file_items_openai", {
-      //     query_embedding: openaiEmbedding as any,
-      //     match_count: sourceCount,
-      //     file_ids: uniqueFileIds
-      //   })
-      // if (openaiError) {
-      //   throw openaiError
-      // }
-      // chunks = openaiFileItems
-    } else if (embeddingsProvider === "local") {
-      const localEmbedding = await generateLocalEmbedding(userInput)
+    // if (embeddingsProvider === "openai") {
+    // const response = await openai.embeddings.create({
+    //   model: "text-embedding-3-small",
+    //   input: userInput
+    // })
+    // const openaiEmbedding = response.data.map(item => item.embedding)[0]
+    // const { data: openaiFileItems, error: openaiError } =
+    //   await supabaseAdmin.rpc("match_file_items_openai", {
+    //     query_embedding: openaiEmbedding as any,
+    //     match_count: sourceCount,
+    //     file_ids: uniqueFileIds
+    //   })
+    // if (openaiError) {
+    //   throw openaiError
+    // }
+    // chunks = openaiFileItems
+    // } else if (embeddingsProvider === "local") {
+    //   const localEmbedding = await generateLocalEmbedding(userInput)
 
-      const { data: localFileItems, error: localFileItemsError } =
-        await supabaseAdmin.rpc("match_file_items_local", {
-          query_embedding: localEmbedding as any,
-          match_count: sourceCount,
-          file_ids: uniqueFileIds
-        })
+    //   const { data: localFileItems, error: localFileItemsError } =
+    //     await supabaseAdmin.rpc("match_file_items_local", {
+    //       query_embedding: localEmbedding as any,
+    //       match_count: sourceCount,
+    //       file_ids: uniqueFileIds
+    //     })
 
-      if (localFileItemsError) {
-        throw localFileItemsError
-      }
+    //   if (localFileItemsError) {
+    //     throw localFileItemsError
+    //   }
 
-      chunks = localFileItems
-    }
+    //   chunks = localFileItems
+    // }
 
     const mostSimilarChunks = chunks?.sort(
       (a, b) => b.similarity - a.similarity

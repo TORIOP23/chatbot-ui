@@ -30,8 +30,7 @@ export const CreateAssistant: FC<CreateAssistantProps> = ({
     temperature: selectedWorkspace?.default_temperature,
     contextLength: selectedWorkspace?.default_context_length,
     includeProfileContext: false,
-    includeWorkspaceInstructions: false,
-    embeddingsProvider: selectedWorkspace?.embeddings_provider
+    includeWorkspaceInstructions: false
   })
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imageLink, setImageLink] = useState("")
@@ -121,7 +120,6 @@ export const CreateAssistant: FC<CreateAssistantProps> = ({
           image_path: "",
           prompt: assistantChatSettings.prompt,
           temperature: assistantChatSettings.temperature,
-          embeddings_provider: assistantChatSettings.embeddingsProvider,
           files: selectedAssistantRetrievalItems.filter(item =>
             item.hasOwnProperty("type")
           ) as Tables<"files">[],

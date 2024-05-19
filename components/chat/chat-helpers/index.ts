@@ -53,7 +53,6 @@ export const handleRetrieval = async (
   userInput: string,
   newMessageFiles: ChatFile[],
   chatFiles: ChatFile[],
-  embeddingsProvider: "vilm",
   sourceCount: number
 ) => {
   const response = await fetch("/api/retrieval/retrieve", {
@@ -61,7 +60,6 @@ export const handleRetrieval = async (
     body: JSON.stringify({
       userInput,
       fileIds: [...newMessageFiles, ...chatFiles].map(file => file.id),
-      embeddingsProvider,
       sourceCount
     })
   })
@@ -199,8 +197,6 @@ export const handleHostedChat = async (
   setChatMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
   setToolInUse: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  const provider = modelData.provider
-
   let formattedMessages: any
 
   formattedMessages =
@@ -223,13 +219,12 @@ export const handleHostedChat = async (
 
   // console.log("formattedMessages", formattedMessages)
 
-  const apiEndpoint =
-    provider === "vilm" ? "/api/chat/vinallama" : `/api/chat/${provider}`
+  const apiEndpoint = "/api/chat/vinallama"
 
   const requestBody = {
     chatSettings: payload.chatSettings,
     messages: formattedMessages,
-    customModelId: provider === "vilm" ? modelData.hostedId : ""
+    customModelId: modelData.hostedId
   }
 
   // const response = await fetchChatResponse(
@@ -390,8 +385,7 @@ export const handleCreateChat = async (
     model: chatSettings.model,
     name: messageContent.substring(0, 100),
     prompt: chatSettings.prompt,
-    temperature: chatSettings.temperature,
-    embeddings_provider: chatSettings.embeddingsProvider
+    temperature: chatSettings.temperature
   })
 
   setSelectedChat(createdChat)

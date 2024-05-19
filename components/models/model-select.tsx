@@ -1,5 +1,5 @@
 import { ChatbotUIContext } from "@/context/context"
-import { LLM, LLMID, ModelProvider } from "@/types"
+import { LLM, LLMID } from "@/types"
 import { IconCheck, IconChevronDown } from "@tabler/icons-react"
 import { FC, useContext, useEffect, useRef, useState } from "react"
 import { Button } from "../ui/button"
@@ -47,25 +47,12 @@ export default function ModelSelect({
     ...models.map(model => ({
       modelId: model.model_id as LLMID,
       modelName: model.name,
-      provider: "vilm" as ModelProvider,
       hostedId: model.id,
       platformLink: "",
       imageInput: false
     })),
     ...availableHostedModels
   ]
-
-  const groupedModels = allModels.reduce<Record<string, LLM[]>>(
-    (groups, model) => {
-      const key = model.provider
-      if (!groups[key]) {
-        groups[key] = []
-      }
-      groups[key].push(model)
-      return groups
-    },
-    {}
-  )
 
   const selectedModel = allModels.find(
     model => model.modelId === selectedModelId
@@ -99,11 +86,7 @@ export default function ModelSelect({
             <div className="flex items-center">
               {selectedModel ? (
                 <>
-                  <ModelIcon
-                    provider={selectedModel?.provider}
-                    width={26}
-                    height={26}
-                  />
+                  <ModelIcon width={26} height={26} />
                   <div className="ml-2 flex items-center">
                     {selectedModel?.modelName}
                   </div>
@@ -132,44 +115,26 @@ export default function ModelSelect({
         />
 
         <div className="max-h-[300px] overflow-auto">
-          {Object.entries(groupedModels).map(([provider, models]) => {
-            const filteredModels = models
-              .filter(model =>
-                model.modelName.toLowerCase().includes(search.toLowerCase())
+          <div className="mb-4">
+            {allModels.map(model => {
+              return (
+                <div
+                  key={model.modelId}
+                  className="flex items-center space-x-1"
+                >
+                  {selectedModelId === model.modelId && (
+                    <IconCheck className="ml-2" size={32} />
+                  )}
+
+                  <ModelOption
+                    key={model.modelId}
+                    model={model}
+                    onSelect={() => handleSelectModel(model.modelId)}
+                  />
+                </div>
               )
-              .sort((a, b) => a.provider.localeCompare(b.provider))
-
-            if (filteredModels.length === 0) return null
-
-            return (
-              <div key={provider}>
-                <div className="mb-1 ml-2 text-xs font-bold tracking-wide opacity-50">
-                  {provider === "vilm" && provider.toLocaleUpperCase()}
-                </div>
-
-                <div className="mb-4">
-                  {filteredModels.map(model => {
-                    return (
-                      <div
-                        key={model.modelId}
-                        className="flex items-center space-x-1"
-                      >
-                        {selectedModelId === model.modelId && (
-                          <IconCheck className="ml-2" size={32} />
-                        )}
-
-                        <ModelOption
-                          key={model.modelId}
-                          model={model}
-                          onSelect={() => handleSelectModel(model.modelId)}
-                        />
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )
-          })}
+            })}
+          </div>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

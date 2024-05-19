@@ -104,8 +104,7 @@ export const useSelectFileHandler = () => {
               tokens: 0,
               type: simplifiedFileType
             },
-            selectedWorkspace.id,
-            chatSettings.embeddingsProvider
+            selectedWorkspace.id
           )
 
           setFiles(prev => [...prev, createdFile])
@@ -165,8 +164,7 @@ export const useSelectFileHandler = () => {
                 tokens: 0,
                 type: simplifiedFileType
               },
-              selectedWorkspace.id,
-              chatSettings.embeddingsProvider
+              selectedWorkspace.id
             )
 
             setFiles(prev => [...prev, createdFile])

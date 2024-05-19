@@ -71,8 +71,7 @@ export const GlobalState: FC<GlobalStateProps> = ({ children }) => {
     temperature: 0.5,
     contextLength: 4000,
     includeProfileContext: true,
-    includeWorkspaceInstructions: true,
-    embeddingsProvider: "vilm"
+    includeWorkspaceInstructions: true
   })
   const [selectedChat, setSelectedChat] = useState<Tables<"chats"> | null>(null)
   const [chatFileItems, setChatFileItems] = useState<Tables<"file_items">[]>([])

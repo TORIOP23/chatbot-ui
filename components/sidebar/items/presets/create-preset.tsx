@@ -28,8 +28,7 @@ export const CreatePreset: FC<CreatePresetProps> = ({
     contextLength: selectedWorkspace?.default_context_length,
     includeProfileContext: selectedWorkspace?.include_profile_context,
     includeWorkspaceInstructions:
-      selectedWorkspace?.include_workspace_instructions,
-    embeddingsProvider: selectedWorkspace?.embeddings_provider
+      selectedWorkspace?.include_workspace_instructions
   })
 
   if (!profile) return null
@@ -52,8 +51,7 @@ export const CreatePreset: FC<CreatePresetProps> = ({
           context_length: presetChatSettings.contextLength,
           model: presetChatSettings.model,
           prompt: presetChatSettings.prompt,
-          temperature: presetChatSettings.temperature,
-          embeddings_provider: presetChatSettings.embeddingsProvider
+          temperature: presetChatSettings.temperature
         } as TablesInsert<"presets">
       }
       renderInputs={() => (

@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS presets (
     -- REQUIRED
     context_length INT NOT NULL,
     description TEXT NOT NULL CHECK (char_length(description) <= 500),
-    embeddings_provider TEXT NOT NULL CHECK (char_length(embeddings_provider) <= 1000),
     include_profile_context BOOLEAN NOT NULL,
     include_workspace_instructions BOOLEAN NOT NULL,
     model TEXT NOT NULL CHECK (char_length(model) <= 1000),

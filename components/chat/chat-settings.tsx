@@ -1,7 +1,7 @@
 import { ChatbotUIContext } from "@/context/context"
 import { CHAT_SETTING_LIMITS } from "@/lib/chat-setting-limits"
 import useHotkey from "@/lib/hooks/use-hotkey"
-import { LLMID, ModelProvider } from "@/types"
+import { LLMID } from "@/types"
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react"
 import { FC, useContext, useEffect, useRef } from "react"
 import { Button } from "../ui/button"
@@ -46,7 +46,6 @@ export default function ChatSettings({}: ChatSettingsProps) {
     ...models.map(model => ({
       modelId: model.model_id as LLMID,
       modelName: model.name,
-      provider: "vilm" as ModelProvider,
       hostedId: model.id,
       platformLink: "",
       imageInput: false

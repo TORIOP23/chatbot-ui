@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS workspaces (
     default_prompt TEXT NOT NULL CHECK (char_length(default_prompt) <= 100000),
     default_temperature REAL NOT NULL,
     description TEXT NOT NULL CHECK (char_length(description) <= 500),
-    embeddings_provider TEXT NOT NULL CHECK (char_length(embeddings_provider) <= 1000),
     include_profile_context BOOLEAN NOT NULL,
     include_workspace_instructions BOOLEAN NOT NULL,
     instructions TEXT NOT NULL CHECK (char_length(instructions) <= 1500),

@@ -2,8 +2,8 @@ INSERT INTO auth.users (instance_id, id, aud, role, email, encrypted_password, e
 ('00000000-0000-0000-0000-000000000000', 'e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', 'authenticated', 'authenticated', 'test@test.com', crypt('password', gen_salt('bf')), '2023-02-18 23:31:13.017218+00', NULL, '', '2023-02-18 23:31:12.757017+00', '', NULL, '', '', NULL, '2023-02-18 23:31:13.01781+00', '{"provider": "email", "providers": ["email"]}', '{}', NULL, '2023-02-18 23:31:12.752281+00', '2023-02-18 23:31:13.019418+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, 'f');
 
 -- Start data for workspaces 
-INSERT INTO workspaces (user_id, name, description, default_context_length, default_model, default_prompt, default_temperature, include_profile_context, include_workspace_instructions, instructions, is_home, sharing, embeddings_provider) VALUES 
-('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', 'Workspace 1', 'This is for testing.', 4000, 'vinallama-7b-chat-7b-chat', 'You are an assistant.', 0.5, true, true, 'These are the instructions.', false, 'private', 'vilm');
+INSERT INTO workspaces (user_id, name, description, default_context_length, default_model, default_prompt, default_temperature, include_profile_context, include_workspace_instructions, instructions, is_home, sharing) VALUES 
+('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', 'Workspace 1', 'This is for testing.', 4000, 'vinallama-7b-chat-7b-chat', 'You are an assistant.', 0.5, true, true, 'These are the instructions.', false, 'private');
 
 -- Get workspace ids
 DO $$
@@ -41,8 +41,8 @@ BEGIN
   -- END;
 
   -- start data for presets
-  INSERT INTO presets (user_id, created_at, updated_at, sharing, include_profile_context, include_workspace_instructions, context_length, model, name, prompt, temperature, description, embeddings_provider) VALUES
-  ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'private', TRUE, TRUE, 4000, 'vinallama-7b-chat', 'Preset 1', 'Prompt 1', 0.5, 'Description for Preset 1', 'openai');
+  INSERT INTO presets (user_id, created_at, updated_at, sharing, include_profile_context, include_workspace_instructions, context_length, model, name, prompt, temperature, description) VALUES
+  ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'private', TRUE, TRUE, 4000, 'vinallama-7b-chat', 'Preset 1', 'Prompt 1', 0.5, 'Description for Preset 1');
 
   -- Get preset id
   DECLARE
@@ -56,8 +56,8 @@ BEGIN
   END;
 
   -- Start data for assistants 
-  INSERT INTO assistants (user_id, name, description, model, image_path, sharing, context_length, include_profile_context, include_workspace_instructions, prompt, temperature, embeddings_provider) VALUES 
-  ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', 'Albert Einstein', 'This is an Albert Einstein assistant.', 'vinallama-7b-chat-7b-chat', '', 'private', 4000, TRUE, TRUE, 'You are Albert Einstein.', 0.5, 'vilm');
+  INSERT INTO assistants (user_id, name, description, model, image_path, sharing, context_length, include_profile_context, include_workspace_instructions, prompt, temperature) VALUES 
+  ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', 'Albert Einstein', 'This is an Albert Einstein assistant.', 'vinallama-7b-chat-7b-chat', '', 'private', 4000, TRUE, TRUE, 'You are Albert Einstein.', 0.5);
 
   -- Get assistant id
   DECLARE
@@ -71,16 +71,16 @@ BEGIN
   END;
 
   -- Start data for chats 
-  INSERT INTO chats (user_id, workspace_id, name, model, prompt, temperature, context_length, include_profile_context, include_workspace_instructions, embeddings_provider) VALUES 
-  ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', workspace1_id, 'Chat 1', 'vinallama-7b-chat-7b-chat', 'You are an assistant.', 0.5, 4000, TRUE, TRUE, 'vilm');
+  INSERT INTO chats (user_id, workspace_id, name, model, prompt, temperature, context_length, include_profile_context, include_workspace_instructions) VALUES 
+  ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', workspace1_id, 'Chat 1', 'vinallama-7b-chat-7b-chat', 'You are an assistant.', 0.5, 4000, TRUE, TRUE);
 
   DECLARE
     folder1_id UUID;
   BEGIN
     SELECT id INTO folder1_id FROM folders WHERE name='Chat Folder 1';
 
-    INSERT INTO chats (user_id, workspace_id, name, model, prompt, temperature, context_length, include_profile_context, include_workspace_instructions, folder_id, embeddings_provider) VALUES 
-    ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', workspace1_id, 'Chat 4', 'vinallama-7b-chat-7b-chat', 'You are an assistant.', 0.5, 4000, TRUE, TRUE, folder1_id, 'vilm');
+    INSERT INTO chats (user_id, workspace_id, name, model, prompt, temperature, context_length, include_profile_context, include_workspace_instructions, folder_id) VALUES 
+    ('e9fc7e46-a8a5-4fd4-8ba7-af485013e6fa', workspace1_id, 'Chat 4', 'vinallama-7b-chat-7b-chat', 'You are an assistant.', 0.5, 4000, TRUE, TRUE, folder1_id);
   END;
 
   -- Start data for messages 

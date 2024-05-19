@@ -62,8 +62,7 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
     contextLength: selectedWorkspace?.default_context_length,
     includeProfileContext: selectedWorkspace?.include_profile_context,
     includeWorkspaceInstructions:
-      selectedWorkspace?.include_workspace_instructions,
-    embeddingsProvider: selectedWorkspace?.embeddings_provider
+      selectedWorkspace?.include_workspace_instructions
   })
 
   useEffect(() => {
@@ -112,7 +111,6 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
       default_prompt: defaultChatSettings.prompt,
       default_temperature: defaultChatSettings.temperature,
       default_context_length: defaultChatSettings.contextLength,
-      embeddings_provider: defaultChatSettings.embeddingsProvider,
       include_profile_context: defaultChatSettings.includeProfileContext,
       include_workspace_instructions:
         defaultChatSettings.includeWorkspaceInstructions
@@ -124,8 +122,7 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
       defaultChatSettings.temperature &&
       defaultChatSettings.contextLength &&
       defaultChatSettings.includeProfileContext &&
-      defaultChatSettings.includeWorkspaceInstructions &&
-      defaultChatSettings.embeddingsProvider
+      defaultChatSettings.includeWorkspaceInstructions
     ) {
       setChatSettings({
         model: defaultChatSettings.model as LLMID,
@@ -134,9 +131,7 @@ export const WorkspaceSettings: FC<WorkspaceSettingsProps> = ({}) => {
         contextLength: defaultChatSettings.contextLength,
         includeProfileContext: defaultChatSettings.includeProfileContext,
         includeWorkspaceInstructions:
-          defaultChatSettings.includeWorkspaceInstructions,
-        embeddingsProvider:
-          (defaultChatSettings.embeddingsProvider as "vilm") || "vilm"
+          defaultChatSettings.includeWorkspaceInstructions
       })
     }
 

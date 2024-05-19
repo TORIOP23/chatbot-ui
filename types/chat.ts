@@ -8,7 +8,6 @@ export interface ChatSettings {
   contextLength: number
   includeProfileContext: boolean
   includeWorkspaceInstructions: boolean
-  embeddingsProvider: "vilm"
 }
 
 export interface ChatPayload {

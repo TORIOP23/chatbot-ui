@@ -9,10 +9,9 @@ import OpenAI from "openai"
 
 export async function POST(req: Request) {
   const json = await req.json()
-  const { text, fileId, embeddingsProvider, fileExtension } = json as {
+  const { text, fileId, fileExtension } = json as {
     text: string
     fileId: string
-    embeddingsProvider: "openai" | "local"
     fileExtension: string
   }
 
@@ -23,14 +22,6 @@ export async function POST(req: Request) {
     )
 
     const profile = await getServerProfile()
-
-    if (embeddingsProvider === "openai") {
-      // if (profile.use_azure_openai) {
-      //   checkApiKey(profile.azure_openai_api_key, "Azure OpenAI")
-      // } else {
-      //   checkApiKey(profile.openai_api_key, "OpenAI")
-      // }
-    }
 
     let chunks: FileItemChunk[] = []
 
@@ -61,41 +52,28 @@ export async function POST(req: Request) {
     //   })
     // }
 
-    if (embeddingsProvider === "openai") {
-      // const response = await openai.embeddings.create({
-      //   model: "text-embedding-3-small",
-      //   input: chunks.map(chunk => chunk.content)
-      // })
-      // embeddings = response.data.map((item: any) => {
-      //   return item.embedding
-      // })
-    } else if (embeddingsProvider === "local") {
-      const embeddingPromises = chunks.map(async chunk => {
-        try {
-          return await generateLocalEmbedding(chunk.content)
-        } catch (error) {
-          console.error(`Error generating embedding for chunk: ${chunk}`, error)
-          return null
-        }
-      })
-
-      embeddings = await Promise.all(embeddingPromises)
-    }
+    // const file_items = chunks.map((chunk, index) => ({
+    //   file_id: fileId,
+    //   user_id: profile.user_id,
+    //   content: chunk.content,
+    //   tokens: chunk.tokens,
+    //   openai_embedding:
+    //     embeddingsProvider === "openai"
+    //       ? ((embeddings[index] || null) as any)
+    //       : null,
+    //   local_embedding:
+    //     embeddingsProvider === "local"
+    //       ? ((embeddings[index] || null) as any)
+    //       : null
+    // }))
 
     const file_items = chunks.map((chunk, index) => ({
       file_id: fileId,
       user_id: profile.user_id,
       content: chunk.content,
-      tokens: chunk.tokens,
-      openai_embedding:
-        embeddingsProvider === "openai"
-          ? ((embeddings[index] || null) as any)
-          : null,
-      local_embedding:
-        embeddingsProvider === "local"
-          ? ((embeddings[index] || null) as any)
-          : null
-    }))
+      tokens: chunk.tokens
+      // local_embedding: generateLocalEmbedding(chunk.content)
+    })) // TODO: Add OpenAI embeddings
 
     await supabaseAdmin.from("file_items").upsert(file_items)
 

@@ -23,7 +23,6 @@ CREATE TABLE IF NOT EXISTS chats (
 
     -- REQUIRED
     context_length INT NOT NULL,
-    embeddings_provider TEXT NOT NULL CHECK (char_length(embeddings_provider) <= 1000),
     include_profile_context BOOLEAN NOT NULL,
     include_workspace_instructions BOOLEAN NOT NULL,
     model TEXT NOT NULL CHECK (char_length(model) <= 1000),

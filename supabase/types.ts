@@ -223,7 +223,6 @@ export type Database = {
           context_length: number
           created_at: string
           description: string
-          embeddings_provider: string
           folder_id: string | null
           id: string
           image_path: string
@@ -241,7 +240,6 @@ export type Database = {
           context_length: number
           created_at?: string
           description: string
-          embeddings_provider: string
           folder_id?: string | null
           id?: string
           image_path: string
@@ -259,7 +257,6 @@ export type Database = {
           context_length?: number
           created_at?: string
           description?: string
-          embeddings_provider?: string
           folder_id?: string | null
           id?: string
           image_path?: string
@@ -341,7 +338,6 @@ export type Database = {
           assistant_id: string | null
           context_length: number
           created_at: string
-          embeddings_provider: string
           folder_id: string | null
           id: string
           include_profile_context: boolean
@@ -359,7 +355,6 @@ export type Database = {
           assistant_id?: string | null
           context_length: number
           created_at?: string
-          embeddings_provider: string
           folder_id?: string | null
           id?: string
           include_profile_context: boolean
@@ -377,7 +372,6 @@ export type Database = {
           assistant_id?: string | null
           context_length?: number
           created_at?: string
-          embeddings_provider?: string
           folder_id?: string | null
           id?: string
           include_profile_context?: boolean
@@ -1037,7 +1031,6 @@ export type Database = {
           context_length: number
           created_at: string
           description: string
-          embeddings_provider: string
           folder_id: string | null
           id: string
           include_profile_context: boolean
@@ -1054,7 +1047,6 @@ export type Database = {
           context_length: number
           created_at?: string
           description: string
-          embeddings_provider: string
           folder_id?: string | null
           id?: string
           include_profile_context: boolean
@@ -1071,7 +1063,6 @@ export type Database = {
           context_length?: number
           created_at?: string
           description?: string
-          embeddings_provider?: string
           folder_id?: string | null
           id?: string
           include_profile_context?: boolean
@@ -1356,7 +1347,6 @@ export type Database = {
           default_prompt: string
           default_temperature: number
           description: string
-          embeddings_provider: string
           id: string
           image_path: string
           include_profile_context: boolean
@@ -1375,7 +1365,6 @@ export type Database = {
           default_prompt: string
           default_temperature: number
           description: string
-          embeddings_provider: string
           id?: string
           image_path?: string
           include_profile_context: boolean
@@ -1394,7 +1383,6 @@ export type Database = {
           default_prompt?: string
           default_temperature?: number
           description?: string
-          embeddings_provider?: string
           id?: string
           image_path?: string
           include_profile_context?: boolean

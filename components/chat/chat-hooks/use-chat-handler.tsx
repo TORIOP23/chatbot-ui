@@ -7,7 +7,7 @@ import { getCollectionFilesByCollectionId } from "@/db/collection-files"
 import { deleteMessagesIncludingAndAfter } from "@/db/messages"
 import { buildFinalMessages } from "@/lib/build-prompt"
 import { Tables } from "@/supabase/types"
-import { ChatMessage, ChatPayload, LLMID, ModelProvider } from "@/types"
+import { ChatMessage, ChatPayload, LLMID } from "@/types"
 import { useRouter } from "next/navigation"
 import { useContext, useEffect, useRef } from "react"
 import { LLM_LIST } from "../../../lib/models/llm/llm-list"
@@ -105,8 +105,7 @@ export const useChatHandler = () => {
         contextLength: selectedAssistant.context_length,
         includeProfileContext: selectedAssistant.include_profile_context,
         includeWorkspaceInstructions:
-          selectedAssistant.include_workspace_instructions,
-        embeddingsProvider: selectedAssistant.embeddings_provider as "vilm"
+          selectedAssistant.include_workspace_instructions
       })
 
       let allFiles = []
@@ -147,8 +146,7 @@ export const useChatHandler = () => {
         contextLength: selectedPreset.context_length,
         includeProfileContext: selectedPreset.include_profile_context,
         includeWorkspaceInstructions:
-          selectedPreset.include_workspace_instructions,
-        embeddingsProvider: selectedPreset.embeddings_provider as "vilm"
+          selectedPreset.include_workspace_instructions
       })
     } else if (selectedWorkspace) {
       // setChatSettings({
@@ -202,7 +200,6 @@ export const useChatHandler = () => {
         ...models.map(model => ({
           modelId: model.model_id as LLMID,
           modelName: model.name,
-          provider: "vilm" as ModelProvider,
           hostedId: model.id,
           platformLink: "",
           imageInput: false
@@ -233,7 +230,6 @@ export const useChatHandler = () => {
           userInput,
           newMessageFiles,
           chatFiles,
-          chatSettings!.embeddingsProvider,
           sourceCount
         )
       }

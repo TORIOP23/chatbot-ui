@@ -32,13 +32,7 @@ export const PresetItem: FC<PresetItemProps> = ({ preset }) => {
       item={preset}
       isTyping={isTyping}
       contentType="presets"
-      icon={
-        <ModelIcon
-          provider={modelDetails?.provider || "vilm"}
-          height={30}
-          width={30}
-        />
-      }
+      icon={<ModelIcon height={30} width={30} />}
       updateState={{
         name,
         description,

@@ -61,8 +61,7 @@ export const getFileWorkspacesByFileId = async (fileId: string) => {
 export const createFileBasedOnExtension = async (
   file: File,
   fileRecord: TablesInsert<"files">,
-  workspace_id: string,
-  embeddingsProvider: "vilm"
+  workspace_id: string
 ) => {
   const fileExtension = file.name.split(".").pop()
 
@@ -72,15 +71,9 @@ export const createFileBasedOnExtension = async (
       arrayBuffer
     })
 
-    return createDocXFile(
-      result.value,
-      file,
-      fileRecord,
-      workspace_id,
-      embeddingsProvider
-    )
+    return createDocXFile(result.value, file, fileRecord, workspace_id)
   } else {
-    return createFile(file, fileRecord, workspace_id, embeddingsProvider)
+    return createFile(file, fileRecord, workspace_id)
   }
 }
 
@@ -88,8 +81,7 @@ export const createFileBasedOnExtension = async (
 export const createFile = async (
   file: File,
   fileRecord: TablesInsert<"files">,
-  workspace_id: string,
-  embeddingsProvider: "vilm"
+  workspace_id: string
 ) => {
   let validFilename = fileRecord.name.replace(/[^a-z0-9.]/gi, "_").toLowerCase()
   const extension = file.name.split(".").pop()
@@ -128,7 +120,6 @@ export const createFile = async (
 
   const formData = new FormData()
   formData.append("file_id", createdFile.id)
-  formData.append("embeddingsProvider", embeddingsProvider)
 
   const response = await fetch("/api/retrieval/process", {
     method: "POST",
@@ -157,8 +148,7 @@ export const createDocXFile = async (
   text: string,
   file: File,
   fileRecord: TablesInsert<"files">,
-  workspace_id: string,
-  embeddingsProvider: "vilm"
+  workspace_id: string
 ) => {
   const { data: createdFile, error } = await supabase
     .from("files")
@@ -194,7 +184,6 @@ export const createDocXFile = async (
     body: JSON.stringify({
       text: text,
       fileId: createdFile.id,
-      embeddingsProvider,
       fileExtension: "docx"
     })
   })

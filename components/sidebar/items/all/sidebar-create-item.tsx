@@ -78,8 +78,7 @@ export const SidebarCreateItem: FC<SidebarCreateItemProps> = ({
       const createdFile = await createFileBasedOnExtension(
         file,
         rest,
-        workspaceId,
-        selectedWorkspace.embeddings_provider as "vilm"
+        workspaceId
       )
 
       return createdFile
