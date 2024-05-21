@@ -291,7 +291,7 @@ export const useChatHandler = () => {
       //     setToolInUse
       //   )
       // } else {
-      const response = await handleHostedChat(
+      generatedText = await handleHostedChat(
         payload,
         profile!,
         modelData!,
@@ -304,8 +304,8 @@ export const useChatHandler = () => {
         setFirstTokenReceived,
         setChatMessages,
         setToolInUse
-      ).then(res => res.json())
-      generatedText = response
+      )
+
       // }
       if (!currentChat) {
         currentChat = await handleCreateChat(

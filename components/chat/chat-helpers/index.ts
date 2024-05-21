@@ -1,3 +1,4 @@
+import { checkApiKey } from "@/lib/server/server-chat-helpers"
 // Only used in use-chat-handler.tsx to keep it clean
 
 import { createChatFiles } from "@/db/chat-files"
@@ -201,16 +202,18 @@ export const handleHostedChat = async (
 
   formattedMessages =
     "<s><|im_start|>system\nBạn đang trò chuyện tâm lý với người dùng."
-  const strategy = randomProperty(strategy_dict)
-  formattedMessages += ` ${strategy}`
   const listMessages = await buildFinalMessages(payload, profile, chatImages)
 
-  if (listMessages.length > 3) {
+  if (listMessages.length > 5) {
+    // const strategy = randomProperty(strategy_dict)
+    // formattedMessages += ` ${strategy}`
     formattedMessages +=
       "Đây là các đoạn hội thoại trước đó của người dùng. Hãy dựa vào nó để hiểu vấn đề đang được trò chuyện:\n"
-    for (let i = 1; i < listMessages.length - 1; i++) {
+    for (let i = listMessages.length - 4; i < listMessages.length - 1; i++) {
       formattedMessages += ` ${listMessages[i].role} ${listMessages[i].content} `
     }
+  } else {
+    formattedMessages += strategy_dict.Question
   }
   formattedMessages +=
     "<|im_end|><|im_start|>user\n" +
@@ -237,22 +240,26 @@ export const handleHostedChat = async (
   // )
 
   const url =
-    process.env.NEXT_PUBLIC_API_CUSTOM_MODEL ||
-    "https://1f2e-35-229-233-191.ngrok-free.app/chat"
+    payload.chatSettings.model === "vinaLlama-7B-chat-finetuned"
+      ? process.env.NEXT_PUBLIC_API_FINETUNED_MODEL
+      : process.env.NEXT_PUBLIC_API_BASE_MODEL
+
   const body = {
     messages: formattedMessages
   }
 
-  const response = await fetch(url, {
+  const response = await fetch(url || "", {
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body)
-  })
+  }).then(res => res.json())
 
-  return response
+  // const response = formattedMessages
+
+  return await response
 
   // return await processResponse(
   //   response,
