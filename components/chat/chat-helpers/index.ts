@@ -205,8 +205,8 @@ export const handleHostedChat = async (
   const listMessages = await buildFinalMessages(payload, profile, chatImages)
 
   if (listMessages.length > 5) {
-    // const strategy = randomProperty(strategy_dict)
-    // formattedMessages += ` ${strategy}`
+    const strategy = randomProperty(strategy_dict)
+    formattedMessages += ` ${strategy}`
     formattedMessages +=
       "Đây là các đoạn hội thoại trước đó của người dùng. Hãy dựa vào nó để hiểu vấn đề đang được trò chuyện:\n"
     for (let i = listMessages.length - 4; i < listMessages.length - 1; i++) {
