@@ -52,7 +52,7 @@ AS $$
 DECLARE
   project_url TEXT := 'https://fyiwsszsicuodkhwjsfp.supabase.co';
   -- full access needed for http request to storage
-  service_role_key TEXT := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5aXdzc3pzaWN1b2RraHdqc2ZwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNjE1Mzg1NywiZXhwIjoyMDMxNzI5ODU3fQ.mnR7_Yfgxe3QIX8CeWi4sPPKVvxRqi5TND_vWDhFZKU'; 
+  service_role_key TEXT := 'service_role_key'; 
   url TEXT := project_url || '/storage/v1/object/' || bucket || '/' || object;
 BEGIN
   SELECT
